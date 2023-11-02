@@ -1,0 +1,38 @@
+#!/bin/bash
+#SBATCH -A m3443
+#SBATCH -J perf_eval_1gpu
+#SBATCH -C gpu
+#SBATCH -q regular
+#SBATCH -t 02:00:00
+#SBATCH -N 1
+#SBATCH --gpus-per-task=1
+#SBATCH --ntasks-per-node=1
+#SBATCH -c 32
+#SBATCH --output=/pscratch/sd/h/hrzhao/Projects/exatrkx-service/evaluate/slurm/slurm-%j/%j.out
+#SBATCH --error=/pscratch/sd/h/hrzhao/Projects/exatrkx-service/evaluate/slurm/slurm-%j/%j.err
+
+output_dir="/pscratch/sd/h/hrzhao/Projects/exatrkx-service/evaluate/slurm/slurm-${SLURM_JOB_ID}"
+output_dir_podman="/workspace/evaluate/slurm/slurm-${SLURM_JOB_ID}"
+
+mkdir -p ${output_dir}
+
+# "Usage: $0 [n_instance_per_gpu] [n_gpus] [output_csv_name] [measurement_interval] [output_dir]"
+srun -n 1 podman-hpc run --rm --gpu --shm-size=20g -p8000:8000 -p8001:8001 -p8002:8002 \
+-v /pscratch/sd/h/hrzhao/Projects/exatrkx-service/:/workspace hrzhao076/exatrkx_triton_backend:4.0 \
+/workspace/evaluate/scripts/evaluate_triton.sh 1 1 perf_analyzer_${SLURM_JOB_ID} 10000 ${output_dir_podman} 
+
+srun -n 1 podman-hpc run --rm --gpu --shm-size=20g -p8000:8000 -p8001:8001 -p8002:8002 \
+-v /pscratch/sd/h/hrzhao/Projects/exatrkx-service/:/workspace hrzhao076/exatrkx_triton_backend:4.0 \
+/workspace/evaluate/scripts/evaluate_triton.sh 2 1 perf_analyzer_${SLURM_JOB_ID} 10000 ${output_dir_podman} 
+
+srun -n 1 podman-hpc run --rm --gpu --shm-size=20g -p8000:8000 -p8001:8001 -p8002:8002 \
+-v /pscratch/sd/h/hrzhao/Projects/exatrkx-service/:/workspace hrzhao076/exatrkx_triton_backend:4.0 \
+/workspace/evaluate/scripts/evaluate_triton.sh 3 1 perf_analyzer_${SLURM_JOB_ID} 10000 ${output_dir_podman} 
+
+srun -n 1 podman-hpc run --rm --gpu --shm-size=20g -p8000:8000 -p8001:8001 -p8002:8002 \
+-v /pscratch/sd/h/hrzhao/Projects/exatrkx-service/:/workspace hrzhao076/exatrkx_triton_backend:4.0 \
+/workspace/evaluate/scripts/evaluate_triton.sh 4 1 perf_analyzer_${SLURM_JOB_ID} 10000 ${output_dir_podman} 
+
+srun -n 1 podman-hpc run --rm --gpu --shm-size=20g -p8000:8000 -p8001:8001 -p8002:8002 \
+-v /pscratch/sd/h/hrzhao/Projects/exatrkx-service/:/workspace hrzhao076/exatrkx_triton_backend:4.0 \
+/workspace/evaluate/scripts/evaluate_triton.sh 5 1 perf_analyzer_${SLURM_JOB_ID} 10000 ${output_dir_podman} 
