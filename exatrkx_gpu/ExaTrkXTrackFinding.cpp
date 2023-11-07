@@ -12,7 +12,7 @@ using namespace torch::indexing;
 #include <find_nbrs.h>
 #include "cuda.h"
 #include "cuda_runtime_api.h"
-#include "weaklyConnectedComponentsCugraph.hpp"
+// #include "weaklyConnectedComponentsCugraph.hpp"
 
 
 ExaTrkXTrackFinding::ExaTrkXTrackFinding(
@@ -168,12 +168,12 @@ void ExaTrkXTrackFinding::getTracks(
         gOutput.data_ptr<float>() + numEdgesAfterF,
         std::back_insert_iterator(edgeWeights));
 
-    // weaklyConnectedComponents<int32_t,int32_t,float>(
-    //     numSpacepoints,
-    //     rowIndices, colIndices, edgeWeights, trackLabels);
-
-    weakly_connected_components<int32_t,int32_t,float>(
+    weaklyConnectedComponents<int32_t,int32_t,float>(
+        numSpacepoints,
         rowIndices, colIndices, edgeWeights, trackLabels);
+
+    // weakly_connected_components<int32_t,int32_t,float>(
+    //     rowIndices, colIndices, edgeWeights, trackLabels);
 
     // std::cout << "size of components: " << trackLabels.size() << std::endl;
     if (trackLabels.size() == 0)  return;

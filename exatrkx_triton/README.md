@@ -8,3 +8,7 @@ And compile the ExaTrkX client code in the `exatrkx_triton` folder:
 `cd /workspace/exatrkx_triton && ./make.sh`.
 
 The code only works if there is server setup. Check `./build/bin/inference-aas -h` for help.
+
+```bash!
+./build/bin/inference-aas -u zeus.lbl.gov:8001 -m exatrkx -d ../exatrkx_pipeline/datanmodels/in_e1000.csv
+```
