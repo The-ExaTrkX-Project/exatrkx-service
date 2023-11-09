@@ -1,6 +1,6 @@
 # Exa.TrkX as a Service
 
-The "ExaTrkX as a service" presented in the CTD 2023. 
+The "ExaTrkX as a service" presented in the CTD 2023 workshop. 
 
 ## Introduction 
 The ExaTrkX pipeline contains 6 stages: Embedding (`embed`), Fixed-radius nearest neighbour (`frnn`), Filtering (`filter`), 
